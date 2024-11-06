@@ -1,2 +1,5 @@
 # ChatHub
-ChatHub code
+All working(except manual login it logges in but not storing its data) 
+@Aryan add call and video call features
+@Krishnendu add css
+and when any of you get time check the manual login 
