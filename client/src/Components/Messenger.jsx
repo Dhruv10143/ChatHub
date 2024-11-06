@@ -3,27 +3,22 @@ import LoginDialog from "./Accounts/LoginDialog";
 import ChatsDialog from './Chats/ChatsDialog';
 import { useContext } from 'react';
 import { AccountContext } from './Context/AccountProvider';
-import { Route,Router } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 
 
 
 const Messenger = () => {
-    const {account}=useContext(AccountContext);
-    return (
-        account?<ChatsDialog/>:
+    const { account } = useContext(AccountContext);
 
-        <div style={{ position: 'relative' }}>
-            <div className="bg-emerald-300 h-64">
-                {/* Content for the first div */}
-            </div>
-            <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', zIndex: 999 }}>
-                <LoginDialog />
-            </div>
-            <div className="bg-zinc-300 h-screen">
-                {/* Content for the second div */}
-            </div>
-            
-        </div>
+    return (
+        <Router>
+            <Routes>
+                {/* Redirect to chat if signed in, otherwise to login */}
+                <Route path="/" element={account ? <Navigate to="/chat" /> : <Navigate to="/login" />} />
+                <Route path="/login" element={account ? <Navigate to="/chat" /> : <LoginDialog />} />
+                <Route path="/chat" element={account ? <ChatsDialog /> : <Navigate to="/login" />} />
+            </Routes>
+        </Router>
     );
 };
 

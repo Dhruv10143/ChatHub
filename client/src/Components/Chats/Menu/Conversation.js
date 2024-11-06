@@ -21,21 +21,41 @@ const Conversation=({user})=> {
 
   }
   return (
-    <div  onClick={()=> getUser()}className='flex h-[75px] py-[13px] px-[0] cursor-pointer items-center'>
+    <>
+    <div  onClick={()=> getUser()} className='flex h-[75px] py-[13px] px-[0] cursor-pointer items-center'>
         <div className='py-[13px] px-[17px] gap-2'>
             <img className="w-[50px] h-[50px] rounded-[50%]"src={user.picture} alt="img" />
         </div>
-        <div className='flex'>
-            <Typography> {user.name}</Typography>
-            {
-              message?.text && 
-              <div className='text-[12px] ml-auto text-zinc-300'><Typography >{formatDate(message?.timestamp)}</Typography></div> 
-            }
+
+        <div className=" flex-col">
+  <div className="flex items-center w-full">
+    <Typography>{user.name}</Typography>
+    <Typography className="absolute text-[12px] pl-[17%] text-zinc-300 mr-auto" sx={{marginLeft:'auto'}}>
+      {message?.text && formatDate(message?.timestamp)}
+    </Typography>
+  </div>
+  <Typography
+    sx={{
+      margin: '0',
+      position: 'relative', // Maintain relative position
+      paddingTop: '0.5%', // Optional: space from the top (if needed)
+      overflowWrap: 'break-word',
+      fontSize: '1rem', // Adjust font size
+      lineHeight: '1.5', // Optional: adjust line height for readability
+      width: 'fit-content', // Ensure width is based on content
+    }}
+  >
+    {message?.text?.includes('localhost') ? 'media' : message.text}
+  </Typography>
+</div>
+
+
+
         </div>
-        <div>
-          <Typography>{message?.text?.includes('localhost')?'media':message.text}</Typography>
-        </div>
-    </div>
+        
+
+
+  </>
   )
 }
 

@@ -10,6 +10,8 @@ const Messages = ({ person, conversation }) => {
   
   const [file, setFile] = useState();
   const [img, setImg] = useState('');
+  const[incomingMessage,setIncomingMessage]=useState(null);
+  const scrollRef=useRef();
   const { account, socket,newMessageLag,setNewMessageLag } = useContext(AccountContext);
 
   // Fetch messages whenever conversation or person changes
@@ -24,11 +26,23 @@ const Messages = ({ person, conversation }) => {
     };
     if (conversation?._id) getConversationDetails();
   }, [person._id, conversation._id, newMessageLag]);
+  // useEffect(()=>{
+  //   scrollRef.current?.scrollIntoView({transition:"smooth"})
+  // },[messages]);
+  useEffect(()=>{
+      if(incomingMessage && conversation?.members?.includes(incomingMessage.senderId)){
+           setMessages(prev=>[...prev,incomingMessage]);
+           Notification.requestPermission();
+           new Notification("New Message",{
+            body:incomingMessage.text
+           })
+          }
+  },[incomingMessage,conversation])
 
   // Send a message
   const sendText = async (e) => {
     const code = e.keyCode || e.which;
-    if (code === 13) {
+    if (code === 13 && socket) {
       const message = {
         senderId: account.sub,
         receiverId: person.sub,
@@ -36,6 +50,8 @@ const Messages = ({ person, conversation }) => {
         type: file ? 'file' : 'text',
         text: file ? img : value,
       };
+
+      socket.emit('sendMessage', message);
 
       await newMessage(message);
       setValue('');
@@ -50,14 +66,15 @@ const Messages = ({ person, conversation }) => {
     const handleIncomingMessage = (data) => {
       if (data.conversationId === conversation._id) {
         setMessages((prev) => [...prev, { ...data, createdAt: Date.now() }]);
+        
       }
     };
 
-    socket.current?.on("getMessage", handleIncomingMessage);
+    socket.on("getMessage", handleIncomingMessage);
 
     // Cleanup listener on component unmount
     return () => {
-      socket.current?.off("getMessage", handleIncomingMessage);
+      socket.off("getMessage", handleIncomingMessage);
     };
   }, [socket, conversation._id]);
 
@@ -65,7 +82,7 @@ const Messages = ({ person, conversation }) => {
     <div>
       <div className="bg-[url('https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png')] bg-cover bg-center h-[46.8rem] w-full flex flex-col overflow-y-auto">
         {messages.map((message, index) => (
-          <div className='py-[1px] px-[80px]' key={message._id || index}>
+          <div className='py-[1px] px-[80px]' ref={scrollRef} key={message._id || index}>
             <Message message={message} />
           </div>
         ))}
