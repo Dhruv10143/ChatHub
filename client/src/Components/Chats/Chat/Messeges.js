@@ -26,9 +26,9 @@ const Messages = ({ person, conversation }) => {
     };
     if (conversation?._id) getConversationDetails();
   }, [person._id, conversation._id, newMessageLag]);
-  // useEffect(()=>{
-  //   scrollRef.current?.scrollIntoView({transition:"smooth"})
-  // },[messages]);
+  useEffect(()=>{
+    scrollRef.current?.scrollIntoView({transition:"smooth"})
+  },[messages]);
   useEffect(()=>{
       if(incomingMessage && conversation?.members?.includes(incomingMessage.senderId)){
            setMessages(prev=>[...prev,incomingMessage]);
@@ -86,7 +86,7 @@ const Messages = ({ person, conversation }) => {
       }}>
       <div className=" bg-cover bg-center h-[49.5rem] w-full flex flex-col overflow-y-auto">
         {messages.map((message, index) => (
-          <div className='py-[1px] px-[80px]' ref={scrollRef} key={message._id || index}>
+          <div className=' px-[5px]' ref={scrollRef} key={message._id || index}>
             <Message message={message} />
           </div>
         ))}

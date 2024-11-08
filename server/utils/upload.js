@@ -8,7 +8,7 @@ const USERNAME = process.env.DB_USERNAME;
 const PASSWORD = process.env.DB_PASSWORD;
 
 const storage = new GridFsStorage({
-    url: `mongodb+srv://${USERNAME}:${PASSWORD}@cluster0.jhpzswv.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`,
+    url: `mongodb+srv://${USERNAME}:${PASSWORD}@cluster0.sppq3.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`,
     options: { useNewUrlParser: true, useUnifiedTopology: true },
     file: (request, file) => {
         // Define acceptable file types

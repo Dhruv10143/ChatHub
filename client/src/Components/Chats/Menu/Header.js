@@ -4,15 +4,22 @@ import Box from '@mui/material/Box';
 import ChatIcon from '@mui/icons-material/Chat';
 import InfoDrawer from '../../Drawer/InfoDrawer';
 import GroupAddIcon from '@mui/icons-material/GroupAdd';
+import { IconButton } from '@mui/material';
 // components
 import HeaderMenu from './HeaderMenu';
+import CreateGroups from './CreateGroups'; // Import CreateGroups component
 
 function Header() {
   const [openDrawer, setOpenDrawer] = useState(false);
+  const [showCreateGroups, setShowCreateGroups] = useState(false); // State to show CreateGroups
   const { account } = useContext(AccountContext);
   
   const toggleDrawer = () => {
     setOpenDrawer(true);
+  };
+
+  const handleGroupClick = () => {
+    setShowCreateGroups((prev) => !prev); // Toggle CreateGroups visibility
   };
 
   return (
@@ -20,9 +27,8 @@ function Header() {
       <div 
         className="h-[60px] py-[8px] px-[16px] flex items-center" 
         style={{
-          backgroundColor: 'rgba(0, 0, 0, 0.6)', // Black with 60% transparency
-          color: 'white', // White text color
-          // Adds a 5px border radius
+          backgroundColor: 'rgba(0, 0, 0, 0.6)',
+          color: 'white',
         }}
       >
         <img 
@@ -33,12 +39,16 @@ function Header() {
         />
         <div>{account.name}</div>
         <Box className="ml-auto flex items-center gap-4">
-          <GroupAddIcon style={{ color: 'white' }} /> {/* Make icon white */}
+          <IconButton onClick={handleGroupClick}>
+            <GroupAddIcon style={{ color: 'white' }} />
+          </IconButton>
           <HeaderMenu setOpenDrawer={setOpenDrawer} />
         </Box>
         <InfoDrawer open={openDrawer} setOpen={setOpenDrawer} />
-        <span className="ml-2"></span> 
       </div>
+      
+      {/* Conditionally render CreateGroups */}
+      {showCreateGroups && <CreateGroups />}
     </div>
   );
 }

@@ -11,13 +11,13 @@ const Message = ({ message }) => {
         <>
             {
                 account.sub === message.senderId ?
-                    <div className='bg-lime-200 max-w-[60%] ml-auto p-[5px] w-fit flex rounded-2xl break-words mb-[5px]' >
+                    <div className='bg-lime-200 max-w-[60%] ml-auto p-[5px] w-fit flex rounded-2xl break-words mb-[2px]' >
                         {
                             message.type === 'file' ? <ImageMessage message={message} /> : <TextMessage message={message} />
                         }
 
                     </div>
-                    : <div className='bg-white  p-[5px] max-w-[60%] w-fit flex rounded-2xl break-words mb-[5px]' >
+                    : <div className='bg-white  p-[5px] max-w-[60%] w-fit flex rounded-2xl break-words mb-[2px]' >
                         {
                             message.type === 'file' ? <ImageMessage message={message} /> : <TextMessage message={message} />
                         }
